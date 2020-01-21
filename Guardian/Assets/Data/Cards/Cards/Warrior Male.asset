@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9591622f689b5bb40b353d0c0ad776a8, type: 3}
+  m_Name: Warrior Male
+  m_EditorClassIdentifier: 
+  cardType: {fileID: 11400000, guid: cd58da9716aebc14ea646f728a6e3195, type: 2}
+  cost: 1
+  properties:
+  - stringValue: Description
+    intValue: 0
+    sprite: {fileID: 21300000, guid: 64b2a897544482c4f81b69be1386caef, type: 3}
+    elements: {fileID: 11400000, guid: d517d15c808bdf64db0962ec80de0126, type: 2}
+  - stringValue: Mana
+    intValue: 1
+    sprite: {fileID: 0}
+    elements: {fileID: 11400000, guid: 9a393926abc23e241b37c6297667b27f, type: 2}
+  - stringValue: Art
+    intValue: 0
+    sprite: {fileID: 21300000, guid: 56846a2dc9c4e3541ab0f296eda87441, type: 3}
+    elements: {fileID: 11400000, guid: 6664f2be6a4099f4085d56649b7da2e1, type: 2}
