@@ -10,8 +10,14 @@ namespace JT
 	{
 		public Sprite potrait;
 
+		private bool canAttack = true;
+
 		public string username;
-		public string[] startingCards;
+		//public string[] startingCards;
+
+		public List<string> startingDeck = new List<string>();
+		[System.NonSerialized]
+		public List<string> allCards = new List<string>();
 
 		public Color playerColor;
 
@@ -45,9 +51,10 @@ namespace JT
 		[System.NonSerialized]
 		public List<ResourceHolder> resourcesList = new List<ResourceHolder>();
 
-		private void OnEnable()
+		public void Init()
 		{
 			health = 20;
+			allCards.AddRange(startingDeck);
 		}
 
 		public int resourcesCount
@@ -108,14 +115,15 @@ namespace JT
 			return result;
 		}
 
-		public void DropCard(CardInstance inst)
+		public void DropCard(CardInstance inst, bool registerEvent = true)
 		{
 			if (handCards.Contains(inst))
 				handCards.Remove(inst);
 
 			cardsDown.Add(inst);
 
-			Settings.RegisterEvent(username + " Used " + inst.visual.card.name + " For " + inst.visual.card.cost + " Resources", Color.white);
+			if(registerEvent)
+				Settings.RegisterEvent(username + " Used " + inst.visual.card.name + " For " + inst.visual.card.cost + " Resources", Color.white);
 		}
 
 		public List<ResourceHolder> GetUnusedResources()
@@ -168,7 +176,13 @@ namespace JT
 
 		public void DoDamage(int v)
 		{
+			/*if (canAttack)
+			{
+			}*/
+
+			canAttack = !canAttack;
 			health -= v;
+
 
 			if (statsUI != null)
 				statsUI.UpdateHealth();

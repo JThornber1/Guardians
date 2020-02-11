@@ -45,14 +45,14 @@ namespace JT
 				{
 					p.text.text = cp.stringValue;
 					p.text.gameObject.SetActive(true);
-					Debug.Log("Reached Text");
+					//Debug.Log("Reached Text");
 				}
 				else
 				if (cp.elements is ElementsImage)
 				{
 					p.image.sprite = cp.sprite;
 					p.image.gameObject.SetActive(true);
-					Debug.Log("Reached Image");
+					//Debug.Log("Reached Image");
 				}
 			}
 

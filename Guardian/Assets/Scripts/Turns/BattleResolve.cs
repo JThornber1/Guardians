@@ -12,29 +12,12 @@ namespace JT
 
 		public override bool IsComplete()
 		{
-			if (forceExit)
-			{
-				forceExit = false;
-				return true;
-			}
-
-			return false;
-		}
-
-		public override void OnEndPhase()
-		{
-			
-		}
-
-		public override void OnStartPhase()
-		{
 			PlayerHolder p = Settings.gameManager.currentPlayer;
 			PlayerHolder e = Settings.gameManager.GetEnemyOf(p);
 
 			if (p.attackingCards.Count == 0)
 			{
-				forceExit = true;
-				return;
+				return true;
 			}
 
 			for (int i = 0; i < p.attackingCards.Count; i++)
@@ -49,10 +32,27 @@ namespace JT
 					continue;
 				}
 
+				p.DropCard(inst, false);
+				p.currentHolder.SetCardDown(inst);
+
+				inst.SetFlatFooted(true);
+
 				e.DoDamage(attack.intValue);
 			}
 
-			forceExit = true;
+			p.attackingCards.Clear();
+
+			return true;
+		}
+
+		public override void OnEndPhase()
+		{
+			
+		}
+
+		public override void OnStartPhase()
+		{ 
+
 		}
 	}
 }

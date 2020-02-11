@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using JT.GameStates;
 
 namespace JT
@@ -53,7 +54,7 @@ namespace JT
             }
 
             currentPlayer = turns[0].player;
-        }
+		}
 
         public void Start()
 		{
@@ -61,7 +62,9 @@ namespace JT
 
 			SetupPlayers();
 
-			CreateStartingCards();
+			//CreateStartingCards();
+
+			turns[0].OnTurnStart();
 
 			turnText.value = turns[turnIndex].player.username;
 			onTurnChanged.Raise();
@@ -69,9 +72,22 @@ namespace JT
 
 		void SetupPlayers()
 		{
+			ResourcesManager rm = Settings.GetResourcesManager();
+
 			for (int i = 0; i < all_players.Length; i++)
 			{
-				if (all_players[i].isHumanPlayer)
+				//if (all_players[i].isHumanPlayer)
+				//{
+				//all_players[i].currentHolder = playerOneHolder;
+				//}
+				//else
+				//{
+				//all_players[i].currentHolder = otherPlayersHolder;
+				//}
+
+				all_players[i].Init();
+
+				if (i == 0)
 				{
 					all_players[i].currentHolder = playerOneHolder;
 				}
@@ -80,17 +96,17 @@ namespace JT
 					all_players[i].currentHolder = otherPlayersHolder;
 				}
 
-				if (i < 2)
-				{
-					all_players[i].statsUI = statsUI[i];
-					statsUI[i].player.LoadPlayerOnStatsUI();
-				}
+				all_players[i].statsUI = statsUI[i];
+				//statsUI[i].player.LoadPlayerOnStatsUI();
+
+				all_players[i].currentHolder.LoadPlayer(all_players[i], all_players[i].statsUI);
+
+				//Settings.RegisterEvent("Created Cards For Player" + all_players[i].username, all_players[i].playerColor);
 			}
 		}
 
-		void CreateStartingCards()
+		/*void CreateStartingCards()
 		{
-			ResourcesManager rm = Settings.GetResourcesManager();
 
 			for (int p = 0; p < all_players.Length; p++)
 			{
@@ -104,23 +120,48 @@ namespace JT
 					Settings.SetParentForCard(go.transform, all_players[p].currentHolder.handGrid.value);
 					all_players[p].handCards.Add(inst);
 				}
-
-				Settings.RegisterEvent("Created Cards For Player" + all_players[p].username, all_players[p].playerColor);
 			}
+		}*/
+
+		public void PickNewCardFromDeck(PlayerHolder p)
+		{
+			if(p.allCards.Count == 0)
+			{
+				Debug.Log("Game Over");
+				return;
+			}
+
+			ResourcesManager rm = Settings.GetResourcesManager();
+
+			string cardId = p.allCards[0];
+			p.allCards.RemoveAt(0);
+			GameObject go = Instantiate(cardPrefab) as GameObject;
+			CardVisual v = go.GetComponent<CardVisual>();
+			v.LoadCard(rm.GetCardInstance(cardId));
+			CardInstance inst = go.GetComponent<CardInstance>();
+			inst.currentLogic = p.handLogic;
+			Settings.SetParentForCard(go.transform, p.currentHolder.handGrid.value);
+			p.handCards.Add(inst);
+			Debug.Log(p.name + " " + p.currentHolder.name);
+			//LoadPlayerOnHolder(p, p.currentHolder, p.statsUI);
 		}
 
-		public bool switchPlayer;
+		public void LoadPlayerOnActive(PlayerHolder p)
+		{
+			PlayerHolder prevPlayer = playerOneHolder.playerHolder;
+			LoadPlayerOnHolder(prevPlayer, otherPlayersHolder, statsUI[1]);
+			LoadPlayerOnHolder(p, playerOneHolder, statsUI[0]);
+		}
+
+		public void LoadPlayerOnHolder(PlayerHolder p, CardHolders h, PlayerStatsUI ui)
+		{
+			h.LoadPlayer(p, ui);
+		}
+
+		//public bool switchPlayer;
 
 		private void Update()
 		{
-			if (switchPlayer)
-			{
-				switchPlayer = false;
-
-				playerOneHolder.LoadPlayer(all_players[0], statsUI[0]);
-				otherPlayersHolder.LoadPlayer(all_players[1], statsUI[1]);
-			}
-
 			bool isComplete = turns[turnIndex].Execute();
 
 			if (isComplete)
@@ -151,6 +192,11 @@ namespace JT
 		public void EndCurrentPahse()
 		{
 			Settings.RegisterEvent(turns[turnIndex].name + " Finished", currentPlayer.playerColor);
+
+			if (currentPlayer.health <= 0)
+			{
+				SceneManager.LoadScene(0);
+			}
 
 			turns[turnIndex].EndCurrentPhase();
 		}

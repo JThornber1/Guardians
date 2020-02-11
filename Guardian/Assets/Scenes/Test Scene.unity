@@ -1460,7 +1460,7 @@ MonoBehaviour:
   turnIndex: 0
   turns:
   - {fileID: 11400000, guid: 3b6844c795409424aa53bf9f69337a53, type: 2}
-  - {fileID: 11400000, guid: 860c4eb0f983b764fb862208b1d6b10e, type: 2}
+  - {fileID: 11400000, guid: f6434d80fe5481f4ab344def66146232, type: 2}
   onTurnChanged: {fileID: 11400000, guid: 50acc9129a176fb4495bfe253d12d5f6, type: 2}
   onPhaseChanged: {fileID: 11400000, guid: ffcfefb259059e44d81533ad0a42b491, type: 2}
   turnText: {fileID: 11400000, guid: 0ba32480fd0043447b5fb852530dc3af, type: 2}

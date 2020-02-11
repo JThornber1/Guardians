@@ -9,6 +9,17 @@ namespace JT
 		public CardVisual visual;
 		public JT.GameElements.GameElementLogic currentLogic;
         public bool isFlatfooted;
+		private bool isSelected = false;
+
+		public void SetFlatFooted(bool isFlat)
+		{
+			isFlatfooted = isFlat;
+
+			if (isFlatfooted)
+				transform.localEulerAngles = new Vector3(0, 0, 90);
+			else
+				transform.localEulerAngles = Vector3.zero;
+		}
 
 		void Start()
 		{
@@ -35,6 +46,8 @@ namespace JT
 			if (currentLogic == null)
 			return;
 
+			//isSelected = !isSelected;
+
 			currentLogic.OnClick(this);
 		}
 
@@ -43,7 +56,7 @@ namespace JT
 			if (currentLogic == null)
 			return;
 			
-			Debug.Log("Highlights");
+			//Debug.Log("Highlights");
 			currentLogic.OnHighlight(this);
 			
 			/*Vector3 s = Vector3.one * 2;

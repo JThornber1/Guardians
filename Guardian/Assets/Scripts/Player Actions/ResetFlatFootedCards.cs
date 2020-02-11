@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace JT
 {
-    [CreateAssetMenu(menuName = "Actions/Player Actions/ Reset Flat Foot")]
+    [CreateAssetMenu(menuName = "Actions/Player Actions/Reset Flat Foot")]
     public class ResetFlatFootedCards : PlayerAction
     {
         public override void Execute(PlayerHolder player)
@@ -13,8 +13,7 @@ namespace JT
             {
                 if (c.isFlatfooted)
                 {
-                    c.visual.transform.localEulerAngles = Vector3.zero;
-                    c.isFlatfooted = false;
+					c.SetFlatFooted(false);
                 }
             }
         }
